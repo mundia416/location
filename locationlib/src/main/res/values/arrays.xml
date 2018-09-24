@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="map_styles">
+        <item>Default</item>
+        <item>Super Simple</item>
+        <item>Shades Of Gray</item>
+        <item>Caro</item>
+        <item>Ultra Light</item>
+        <item>Sutter Green</item>
+        <item>BaySide</item>
+        <item>Gleeson</item>
+        <item>Subtle GrayScale</item>
+        <item>Flames</item>
+        <item>Crazy</item>
+    </string-array>
+
+    <string-array name="map_style_keys">
+    <item>key_default</item>
+    <item>key_super_simple</item>
+        <item>key_shades_of_gray</item>
+    <item>key_caro</item>
+    <item>key_ultra_light</item>
+    <item>key_sutter_green</item>
+    <item>key_bayside</item>
+    <item>key_gleeson</item>
+        <item>key_subtle_grayscale</item>
+    <item>key_flames</item>
+    <item>key_crazy</item>
+    </string-array>
+    
+    <string-array name="units_of_measurement">
+        <item>Meters</item>
+        <item>Kilometers</item>
+        <item>Miles</item>
+        <item>Feet</item>
+        <item>Yards</item>
+    </string-array>
+
+    <string-array name="units_of_measurement_keys">
+        <item>meters</item>
+        <item>kilometers</item>
+        <item>miles</item>
+        <item>feet</item>
+        <item>yards</item>
+    </string-array>
+
+</resources>
