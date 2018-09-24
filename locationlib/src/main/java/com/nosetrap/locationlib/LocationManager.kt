@@ -1,10 +1,16 @@
 package com.nosetrap.locationlib
 
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.location.Criteria
+import android.location.Geocoder
 import android.location.LocationManager
+import android.os.Handler
+import android.os.Message
 import android.provider.Settings
 import android.widget.Toast
+import com.google.android.gms.maps.model.LatLng
 
 /**
  */
@@ -49,5 +55,86 @@ class LocationManager(private val context: Context) {
             LOCATION_MODE_OFF
         }
 
+    }
+
+
+    /**
+     * get the name of a location
+     * this is done in a background thread
+     */
+    fun getLocationName(listener: LocationNameListener,latLng: LatLng) {
+        var name: String? = null
+
+        val handler = Handler({
+            listener.locationName(name)
+            true
+        })
+
+        Thread({
+        try {
+            val geocoder = Geocoder(context)
+            val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+
+            var locationName = addresses[0].subLocality
+
+            if (locationName == null) {
+                locationName = addresses[0].locality
+            } else {
+                if (locationName.isEmpty()) {
+                    locationName = addresses[0].locality
+                }
+            }
+            name = locationName
+        } catch (e: Exception) { }
+
+            handler.sendEmptyMessage(0)
+        }).start()
+    }
+
+    /**
+     * get the users last known location
+     * this is done in a background thread
+     */
+    @SuppressLint("MissingPermission")
+    fun getLastKnownLocation(listener: LocationListener){
+        var lastKnownLocation: LatLng? = null
+
+        val handler = Handler({
+            listener.lastKnownLocation(lastKnownLocation)
+        true
+        })
+
+        Thread({
+            try {
+                val criteria = Criteria()
+                criteria.accuracy = Criteria.ACCURACY_FINE
+                var location = androidLocationManager.getLastKnownLocation(androidLocationManager
+                        .getBestProvider(criteria, true))
+
+                if (location == null) {
+                    location = androidLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                }
+
+                lastKnownLocation = LatLng(location.latitude, location.longitude)
+
+            }catch (e: Exception){}
+            handler.sendEmptyMessage(0)
+
+        }).start()
+
+    }
+
+    /**
+     * listener interface used when getting the last known location
+     */
+    interface LocationListener{
+        fun lastKnownLocation(latLng: LatLng?)
+    }
+
+    /**
+     * listener interface used when getting the name of a location
+     */
+    interface LocationNameListener{
+        fun locationName(name: String?)
     }
 }
