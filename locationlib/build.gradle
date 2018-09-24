@@ -29,6 +29,7 @@ android {
 configurations.all{
     resolutionStrategy{
         force 'com.android.support:support-media-compat:27.1.1'
+        force 'com.android.support:support-v4:27.1.1'
     }
 }
 
