@@ -2,6 +2,7 @@
 <resources>
     <string-array name="map_styles">
         <item>Default</item>
+        <item>Satellite</item>
         <item>Super Simple</item>
         <item>Shades Of Gray</item>
         <item>Caro</item>
@@ -16,6 +17,7 @@
 
     <string-array name="map_style_keys">
     <item>key_default</item>
+        <item>key_satellite</item>
     <item>key_super_simple</item>
         <item>key_shades_of_gray</item>
     <item>key_caro</item>

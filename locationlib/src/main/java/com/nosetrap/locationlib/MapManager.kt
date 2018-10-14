@@ -83,6 +83,12 @@ class MapManager(private val context: Context) {
             if (chosenStyle != "key_default") {
                 map?.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, jsonResource))
             }
+            //if the chosen style is satellite
+            if(chosenStyle == "key_satellite"){
+                map?.mapType = GoogleMap.MAP_TYPE_HYBRID
+            }else{
+                map?.mapType = GoogleMap.MAP_TYPE_NORMAL
+            }
         }catch (e: Exception){
             e.printStackTrace()
         }
