@@ -11,7 +11,6 @@
         <item>BaySide</item>
         <item>Gleeson</item>
         <item>Subtle GrayScale</item>
-        <item>Flames</item>
         <item>Crazy</item>
     </string-array>
 
@@ -26,7 +25,6 @@
     <item>key_bayside</item>
     <item>key_gleeson</item>
         <item>key_subtle_grayscale</item>
-    <item>key_flames</item>
     <item>key_crazy</item>
     </string-array>
     

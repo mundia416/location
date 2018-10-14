@@ -76,7 +76,6 @@ class MapManager(private val context: Context) {
                 "key_bayside" -> jsonResource = R.raw.bayside
                 "key_gleeson" -> jsonResource = R.raw.gleeson
                 "key_super_simple" -> jsonResource = R.raw.super_simple
-                "key_flames" -> jsonResource = R.raw.flames
                 "key_crazy" -> jsonResource = R.raw.crazy
             }
 
