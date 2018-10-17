@@ -1,6 +1,7 @@
 package com.nosetrap.locationlib
 
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Criteria
@@ -9,6 +10,7 @@ import android.location.LocationManager
 import android.os.Handler
 import android.os.Message
 import android.provider.Settings
+import android.support.annotation.RequiresPermission
 import android.widget.Toast
 import com.google.android.gms.maps.model.LatLng
 
@@ -65,12 +67,12 @@ class LocationManager(private val context: Context) {
     fun getLocationName(listener: LocationNameListener,latLng: LatLng) {
         var name: String? = null
 
-        val handler = Handler({
+        val handler = Handler{
             listener.locationName(name)
             true
-        })
+        }
 
-        Thread({
+        Thread{
         try {
             val geocoder = Geocoder(context)
             val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
@@ -88,39 +90,48 @@ class LocationManager(private val context: Context) {
         } catch (e: Exception) { }
 
             handler.sendEmptyMessage(0)
-        }).start()
+        }.start()
+    }
+
+    /**
+     * get the users last known location
+     * this is executed on the main thread
+     */
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun getLastKnownLocation(): LatLng? {
+        return try {
+            val criteria = Criteria()
+            criteria.accuracy = Criteria.ACCURACY_FINE
+            var location = androidLocationManager.getLastKnownLocation(androidLocationManager
+                    .getBestProvider(criteria, true))
+
+            if (location == null) {
+                location = androidLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            }
+
+            LatLng(location.latitude, location.longitude)
+        } catch (e: Exception) {
+            null
+        }
     }
 
     /**
      * get the users last known location
      * this is done in a background thread
      */
-    @SuppressLint("MissingPermission")
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun getLastKnownLocation(listener: LocationListener){
         var lastKnownLocation: LatLng? = null
 
-        val handler = Handler({
+        val handler = Handler{
             listener.lastKnownLocation(lastKnownLocation)
         true
-        })
+        }
 
-        Thread({
-            try {
-                val criteria = Criteria()
-                criteria.accuracy = Criteria.ACCURACY_FINE
-                var location = androidLocationManager.getLastKnownLocation(androidLocationManager
-                        .getBestProvider(criteria, true))
-
-                if (location == null) {
-                    location = androidLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                }
-
-                lastKnownLocation = LatLng(location.latitude, location.longitude)
-
-            }catch (e: Exception){}
+        Thread{
+            lastKnownLocation = getLastKnownLocation()
             handler.sendEmptyMessage(0)
-
-        }).start()
+        }.start()
 
     }
 
