@@ -10,7 +10,7 @@ import android.location.LocationManager
 import android.os.Handler
 import android.os.Message
 import android.provider.Settings
-import android.support.annotation.RequiresPermission
+import androidx.annotation.RequiresPermission
 import android.widget.Toast
 import com.google.android.gms.maps.model.LatLng
 
