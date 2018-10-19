@@ -1,8 +1,10 @@
 package com.nosetrap.locationlib
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.preference.PreferenceManager
+import androidx.annotation.RequiresPermission
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
@@ -27,6 +29,7 @@ class MapManager(private val context: Context) {
     /**
      * zoom the map to the users location with an animated camera
      */
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun zoomToMyLocation(tilt:Boolean = true){
            locationManager.getLastKnownLocationAsync(object : LocationManager.LocationListener{
                override fun lastKnownLocation(latLng: LatLng?) {
@@ -95,6 +98,7 @@ class MapManager(private val context: Context) {
     /**
      * zoom to my location without animating
      */
+    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun forceZoomToMyLocation(tilt:Boolean = true){
         locationManager.getLastKnownLocationAsync(object : LocationManager.LocationListener{
             override fun lastKnownLocation(latLng: LatLng?) {

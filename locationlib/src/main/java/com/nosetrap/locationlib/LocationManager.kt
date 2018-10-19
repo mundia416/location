@@ -106,7 +106,7 @@ class LocationManager(private val context: Context) {
      * this is executed on the main thread
      */
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun getLastKnownLocationAsync(): LatLng? {
+    fun getLastKnownLocation(): LatLng? {
         return try {
             val criteria = Criteria()
             criteria.accuracy = Criteria.ACCURACY_FINE
@@ -137,7 +137,7 @@ class LocationManager(private val context: Context) {
         }
 
         Thread{
-            lastKnownLocation = getLastKnownLocationAsync()
+            lastKnownLocation = getLastKnownLocation()
             handler.sendEmptyMessage(0)
         }.start()
 
