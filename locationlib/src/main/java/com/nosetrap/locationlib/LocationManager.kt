@@ -2,16 +2,13 @@ package com.nosetrap.locationlib
 
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Criteria
 import android.location.Geocoder
 import android.location.LocationManager
 import android.os.Handler
-import android.os.Message
 import android.provider.Settings
 import androidx.annotation.RequiresPermission
-import android.widget.Toast
 import com.google.android.gms.maps.model.LatLng
 
 /**
@@ -59,12 +56,10 @@ class LocationManager(private val context: Context) {
 
     }
 
-
     /**
-     * get the name of a location
-     * this is done in a background thread
+     *
      */
-    fun getLocationName(listener: LocationNameListener,latLng: LatLng) {
+    fun getLocationNameAsync(listener: LocationNameListener,latLng: LatLng) {
         var name: String? = null
 
         val handler = Handler{
@@ -72,8 +67,21 @@ class LocationManager(private val context: Context) {
             true
         }
 
-        Thread{
-        try {
+        Thread {
+            name = getLocationName(latLng)
+            handler.sendEmptyMessage(0)
+    }.start()
+
+}
+
+
+
+        /**
+     * get the name of a location
+     * this is done in a background thread
+     */
+    fun getLocationName(latLng: LatLng): String? {
+        return try {
             val geocoder = Geocoder(context)
             val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
 
@@ -86,11 +94,11 @@ class LocationManager(private val context: Context) {
                     locationName = addresses[0].locality
                 }
             }
-            name = locationName
-        } catch (e: Exception) { }
 
-            handler.sendEmptyMessage(0)
-        }.start()
+            locationName
+        } catch (e: Exception) {
+            null
+        }
     }
 
     /**
@@ -98,7 +106,7 @@ class LocationManager(private val context: Context) {
      * this is executed on the main thread
      */
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun getLastKnownLocation(): LatLng? {
+    fun getLastKnownLocationAsync(): LatLng? {
         return try {
             val criteria = Criteria()
             criteria.accuracy = Criteria.ACCURACY_FINE
@@ -120,7 +128,7 @@ class LocationManager(private val context: Context) {
      * this is done in a background thread
      */
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun getLastKnownLocation(listener: LocationListener){
+    fun getLastKnownLocationAsync(listener: LocationListener){
         var lastKnownLocation: LatLng? = null
 
         val handler = Handler{
@@ -129,7 +137,7 @@ class LocationManager(private val context: Context) {
         }
 
         Thread{
-            lastKnownLocation = getLastKnownLocation()
+            lastKnownLocation = getLastKnownLocationAsync()
             handler.sendEmptyMessage(0)
         }.start()
 

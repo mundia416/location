@@ -28,7 +28,7 @@ class MapManager(private val context: Context) {
      * zoom the map to the users location with an animated camera
      */
     fun zoomToMyLocation(tilt:Boolean = true){
-           locationManager.getLastKnownLocation(object : LocationManager.LocationListener{
+           locationManager.getLastKnownLocationAsync(object : LocationManager.LocationListener{
                override fun lastKnownLocation(latLng: LatLng?) {
                    try {
                    zoomToLocation(latLng!!, tilt)
@@ -96,7 +96,7 @@ class MapManager(private val context: Context) {
      * zoom to my location without animating
      */
     fun forceZoomToMyLocation(tilt:Boolean = true){
-        locationManager.getLastKnownLocation(object : LocationManager.LocationListener{
+        locationManager.getLastKnownLocationAsync(object : LocationManager.LocationListener{
             override fun lastKnownLocation(latLng: LatLng?) {
                 try {
                     forceZoomToLocation(latLng!!, tilt)
