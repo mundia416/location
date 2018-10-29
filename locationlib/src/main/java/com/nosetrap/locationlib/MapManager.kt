@@ -67,29 +67,33 @@ class MapManager(private val context: Context) {
         try {
             var jsonResource = 0
 
-            val chosenStyle = defaultPrefs.getString(context.getString(R.string.key_map_style), "key_default")
+            val chosenStyle = defaultPrefs.getString(context.getString(R.string.key_map_style), context.getString(R.string.key_default))
 
             //@WARNING dont change any of these strings
             when (chosenStyle) {
-                "key_shades_of_gray" -> jsonResource = R.raw.shades_of_gray
-                "key_caro" -> jsonResource = R.raw.caro
-                "key_subtle_grayscale" -> jsonResource = R.raw.subtle_gray_scale
-                "key_ultra_light" -> jsonResource = R.raw.ultra_light
-                "key_sutter_green" -> jsonResource = R.raw.sutter_green
-                "key_bayside" -> jsonResource = R.raw.bayside
-                "key_gleeson" -> jsonResource = R.raw.gleeson
-                "key_super_simple" -> jsonResource = R.raw.super_simple
-                "key_crazy" -> jsonResource = R.raw.crazy
+                context.getString(R.string.key_shades_of_gray)-> jsonResource = R.raw.shades_of_gray
+                context.getString(R.string.key_caro) -> jsonResource = R.raw.caro
+                context.getString(R.string.key_subtle_grayscale) -> jsonResource = R.raw.subtle_gray_scale
+                context.getString(R.string.key_ultra_light) -> jsonResource = R.raw.ultra_light
+                context.getString(R.string.key_sutter_green) -> jsonResource = R.raw.sutter_green
+                context.getString(R.string.key_bayside) -> jsonResource = R.raw.bayside
+                context.getString(R.string.key_gleeson) -> jsonResource = R.raw.gleeson
+                context.getString(R.string.key_super_simple) -> jsonResource = R.raw.super_simple
+                context.getString(R.string.key_crazy) -> jsonResource = R.raw.crazy
             }
 
-            if (chosenStyle != "key_default") {
+            if (chosenStyle != context.getString(R.string.key_default)) {
                 map?.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, jsonResource))
             }
             //if the chosen style is satellite
-            if(chosenStyle == "key_satellite"){
+            if(chosenStyle == context.getString(R.string.key_satellite)){
                 map?.mapType = GoogleMap.MAP_TYPE_HYBRID
             }else{
                 map?.mapType = GoogleMap.MAP_TYPE_NORMAL
+            }
+
+            if(chosenStyle == context.getString(R.string.key_3d)){
+                map?.isBuildingsEnabled = true
             }
         }catch (e: Exception){
             e.printStackTrace()

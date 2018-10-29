@@ -1,47 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="map_styles">
-        <item>Default</item>
-        <item>Satellite</item>
-        <item>Super Simple</item>
-        <item>Shades Of Gray</item>
-        <item>Caro</item>
-        <item>Ultra Light</item>
-        <item>Sutter Green</item>
-        <item>BaySide</item>
-        <item>Gleeson</item>
-        <item>Subtle GrayScale</item>
-        <item>Crazy</item>
+        <item>@string/map_style_default</item>
+        <item>@string/map_style_3d</item>
+        <item>@string/map_style_satellite</item>
+        <item>@string/map_style_super_simple</item>
+        <item>@string/map_style_shades_of_gray</item>
+        <item>@string/map_style_caro</item>
+        <item>@string/map_style_ultra_light</item>
+        <item>@string/map_style_sutter_green</item>
+        <item>@string/map_style_bay_side</item>
+        <item>@string/map_style_gleeson</item>
+        <item>@string/map_style_subtle_grayscale</item>
+        <item>@string/map_style_crazy</item>
     </string-array>
 
     <string-array name="map_style_keys">
-    <item>key_default</item>
-        <item>key_satellite</item>
-    <item>key_super_simple</item>
-        <item>key_shades_of_gray</item>
-    <item>key_caro</item>
-    <item>key_ultra_light</item>
-    <item>key_sutter_green</item>
-    <item>key_bayside</item>
-    <item>key_gleeson</item>
-        <item>key_subtle_grayscale</item>
-    <item>key_crazy</item>
+    <item>@string/key_default</item>
+        <item>@string/key_3d</item>
+        <item>@string/key_satellite</item>
+    <item>@string/key_super_simple</item>
+        <item>@string/key_shades_of_gray</item>
+    <item>@string/key_caro</item>
+    <item>@string/key_ultra_light</item>
+    <item>@string/key_sutter_green</item>
+    <item>@string/key_bayside</item>
+    <item>@string/key_gleeson</item>
+        <item>@string/key_subtle_grayscale</item>
+    <item>@string/key_crazy</item>
     </string-array>
     
     <string-array name="units_of_measurement">
-        <item>Meters</item>
-        <item>Kilometers</item>
-        <item>Miles</item>
-        <item>Feet</item>
-        <item>Yards</item>
+        <item>@string/meters</item>
+        <item>@string/kilometers</item>
+        <item>@string/miles</item>
+        <item>@string/feet</item>
+        <item>@string/yards</item>
     </string-array>
 
     <string-array name="units_of_measurement_keys">
-        <item>meters</item>
-        <item>kilometers</item>
-        <item>miles</item>
-        <item>feet</item>
-        <item>yards</item>
+        <item>@string/key_meters</item>
+        <item>@string/key_kilometers</item>
+        <item>@string/key_miles</item>
+        <item>@string/key_feet</item>
+        <item>@string/key_yards</item>
     </string-array>
 
+    <string-array name="units_of_speed">
+        <item>@string/kmh</item>
+        <item>@string/mph</item>
+    </string-array>
+
+    <string-array name="units_of_speed_2">
+        <item>@string/kmh2</item>
+        <item>@string/mph2</item>
+    </string-array>
+
+    <string-array name="units_of_speed_keys">
+        <item>@string/key_kmh</item>
+        <item>@string/key_mph</item>
+    </string-array>
 </resources>

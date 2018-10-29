@@ -2,5 +2,47 @@
     <string name="app_name">locationLib</string>
     <string name="key_unit_of_measurement">key_unit_of_measurement</string>
     <string name="key_map_style">key_map_style</string>
+    <string name="key_unit_of_speed">key_unit_of_speed</string>
 
+
+    <string name="meters">Meters</string>
+    <string name="kilometers">Kilometers</string>
+    <string name="miles">Miles</string>
+    <string name="feet">Feet</string>
+    <string name="yards">Yards</string>
+    <string name="key_meters">meters</string>
+    <string name="key_kilometers">kilometers</string>
+    <string name="key_miles">miles</string>
+    <string name="key_feet">feet</string>
+    <string name="key_yards">yards</string>
+    <string name="map_style_default">Default</string>
+    <string name="map_style_3d">3D</string>
+    <string name="map_style_satellite">Satellite</string>
+    <string name="map_style_super_simple">Super Simple</string>
+    <string name="map_style_shades_of_gray">Shades Of Gray</string>
+    <string name="map_style_caro">Caro</string>
+    <string name="map_style_ultra_light">Ultra Light</string>
+    <string name="map_style_sutter_green">Sutter Green</string>
+    <string name="map_style_bay_side">BaySide</string>
+    <string name="map_style_gleeson">Gleeson</string>
+    <string name="map_style_subtle_grayscale">Subtle GrayScale</string>
+    <string name="map_style_crazy">Crazy</string>
+    <string name="key_default">key_default</string>
+    <string name="key_3d">key_3d</string>
+    <string name="key_satellite">key_satellite</string>
+    <string name="key_super_simple">key_super_simple</string>
+    <string name="key_shades_of_gray">key_shades_of_gray</string>
+    <string name="key_caro">key_caro</string>
+    <string name="key_ultra_light">key_ultra_light</string>
+    <string name="key_sutter_green">key_sutter_green</string>
+    <string name="key_bayside">key_bayside</string>
+    <string name="key_gleeson">key_gleeson</string>
+    <string name="key_subtle_grayscale">key_subtle_grayscale</string>
+    <string name="key_crazy">key_crazy</string>
+    <string name="kmh">kmh</string>
+    <string name="mph">mph</string>
+    <string name="kmh2">km/h</string>
+    <string name="mph2">mi/h</string>
+    <string name="key_kmh">key_kmh</string>
+    <string name="key_mph">key_mph</string>
 </resources>

@@ -24,13 +24,13 @@ class UnitOfMeasurement(private val context: Context) {
          */
         fun getUnitOfMeasurement(): Unit {
             //
-            val unit = defaultPrefs.getString(context.getString(R.string.key_unit_of_measurement),"meters")
+            val unit = defaultPrefs.getString(context.getString(R.string.key_unit_of_measurement),context.getString(R.string.key_meters))
             return when(unit){
-                "meters" -> Unit.METERS
-                "miles" -> Unit.MILES
-                "kilometers" -> Unit.KILOMETERS
-                "feet" -> Unit.FEET
-                "yards" -> Unit.YARDS
+                context.getString(R.string.key_meters) -> Unit.METERS
+                context.getString(R.string.key_miles) -> Unit.MILES
+                context.getString(R.string.key_kilometers)-> Unit.KILOMETERS
+                context.getString(R.string.key_feet) -> Unit.FEET
+                context.getString(R.string.key_yards) -> Unit.YARDS
                 else -> Unit.METERS
         }
     }

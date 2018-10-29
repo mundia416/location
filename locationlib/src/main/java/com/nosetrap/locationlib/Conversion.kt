@@ -55,5 +55,56 @@ class Conversion {
 
             return location
         }
+
+
+        /**
+         * convert from location to latlng object
+         */
+        fun locationToLatLng(location: Location): LatLng{
+           return LatLng(location.latitude,location.longitude)
+        }
+
+        /**
+         *
+         */
+        fun metersPerSecondToKilometersPerHour(value: Float): Float{
+            return value * 3.6f
+        }
+
+        /**
+         *
+         */
+        fun metersPerSecondToMilesPerHour(value: Float): Float{
+            return value * 2.237f
+        }
+
+        /**
+         *
+         */
+        fun KilometersPerHourToMetersPerSecond(value: Float): Float{
+            return value / 3.6f
+        }
+
+        /**
+         *
+         */
+        fun KilometersPerHourToMilesPerHour(value: Float): Float{
+            return value / 1.609f
+        }
+
+        /**
+         *
+         */
+        fun milesPerHourToKilometersPerHour(value: Float): Float{
+            return value * 1.609f
+
+        }
+
+        /**
+         *
+         */
+        fun milesPerHourToMetersPerSecond(value: Float): Float{
+            return value /  2.237f
+        }
     }
 }
