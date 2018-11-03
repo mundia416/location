@@ -56,26 +56,6 @@ class LocationManager(private val context: Context) {
 
     }
 
-    /**
-     *
-     */
-    fun getLocationNameAsync(listener: LocationNameListener,latLng: LatLng) {
-        var name: String? = null
-
-        val handler = Handler{
-            listener.locationName(name)
-            true
-        }
-
-        Thread {
-            name = getLocationName(latLng)
-            handler.sendEmptyMessage(0)
-    }.start()
-
-}
-
-
-
         /**
      * get the name of a location
      * this is done in a background thread
@@ -121,26 +101,6 @@ class LocationManager(private val context: Context) {
         } catch (e: Exception) {
             null
         }
-    }
-
-    /**
-     * get the users last known location
-     * this is done in a background thread
-     */
-    @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun getLastKnownLocationAsync(listener: LocationListener){
-        var lastKnownLocation: LatLng? = null
-
-        val handler = Handler{
-            listener.lastKnownLocation(lastKnownLocation)
-        true
-        }
-
-        Thread{
-            lastKnownLocation = getLastKnownLocation()
-            handler.sendEmptyMessage(0)
-        }.start()
-
     }
 
     /**

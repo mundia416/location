@@ -19,7 +19,7 @@ class UnitOfSpeed(private val context: Context) {
         /**
          * get the unit of measurement value which is selected in the settings
          */
-        fun getUnitOfMeasurement(): Unit {
+        fun getUnitOfSpeed(): Unit {
             //
             val unit = defaultPrefs.getString(context.getString(R.string.key_unit_of_speed),context.getString(R.string.key_kmh))
             return when(unit){

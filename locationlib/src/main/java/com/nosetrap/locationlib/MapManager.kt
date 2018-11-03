@@ -2,6 +2,7 @@ package com.nosetrap.locationlib
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.preference.PreferenceManager
 import androidx.annotation.RequiresPermission
@@ -12,7 +13,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.MapStyleOptions
 
 
-class MapManager(private val context: Context) {
+class MapManager(private val activity: Activity) {
     companion object {
         const val DEFAULT_MAP_ZOOM = 15f
         private val MAX_TILT = 55f
@@ -23,24 +24,19 @@ class MapManager(private val context: Context) {
      */
     var map: GoogleMap? = null
 
-    private val defaultPrefs = PreferenceManager.getDefaultSharedPreferences(context)
-    private val locationManager = LocationManager(context)
+    private val defaultPrefs = PreferenceManager.getDefaultSharedPreferences(activity)
+    private val locationManager = LocationManager(activity)
 
     /**
      * zoom the map to the users location with an animated camera
      */
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun zoomToMyLocation(tilt:Boolean = true){
-           locationManager.getLastKnownLocationAsync(object : LocationManager.LocationListener{
-               override fun lastKnownLocation(latLng: LatLng?) {
-                   try {
-                   zoomToLocation(latLng!!, tilt)
-                   }catch (e:Exception){}
-               }
-           })
+         val latLng = locationManager.getLastKnownLocation()
 
-
-
+        try {
+            zoomToLocation(latLng!!, tilt)
+        }catch (e:Exception){}
     }
 
 
@@ -51,48 +47,52 @@ class MapManager(private val context: Context) {
      fun initDefault() {
                 forceZoomToMyLocation(false)
                 zoomToMyLocation(true)
-                map?.uiSettings?.setAllGesturesEnabled(true)
-                map?.uiSettings?.isCompassEnabled = false
-                map?.uiSettings?.isMyLocationButtonEnabled = false
-                map?.uiSettings?.isZoomControlsEnabled = false
-                map?.isMyLocationEnabled = true
-                map?.isBuildingsEnabled = false
-                map?.uiSettings?.isMapToolbarEnabled = false
+
+               // activity.runOnUiThread {
+                    map?.uiSettings?.setAllGesturesEnabled(true)
+                    map?.uiSettings?.isCompassEnabled = false
+                    map?.uiSettings?.isMyLocationButtonEnabled = false
+                    map?.uiSettings?.isZoomControlsEnabled = false
+                    map?.isMyLocationEnabled = true
+                    map?.isBuildingsEnabled = false
+                    map?.uiSettings?.isMapToolbarEnabled = false
+                //}
 
                 setMapStyle()
             }
+
 
     private fun setMapStyle(){
         //set the mapstyle depending on the style chosen from the settings
         try {
             var jsonResource = 0
 
-            val chosenStyle = defaultPrefs.getString(context.getString(R.string.key_map_style), context.getString(R.string.key_default))
+            val chosenStyle = defaultPrefs.getString(activity.getString(R.string.key_map_style), activity.getString(R.string.key_default))
 
             //@WARNING dont change any of these strings
             when (chosenStyle) {
-                context.getString(R.string.key_shades_of_gray)-> jsonResource = R.raw.shades_of_gray
-                context.getString(R.string.key_caro) -> jsonResource = R.raw.caro
-                context.getString(R.string.key_subtle_grayscale) -> jsonResource = R.raw.subtle_gray_scale
-                context.getString(R.string.key_ultra_light) -> jsonResource = R.raw.ultra_light
-                context.getString(R.string.key_sutter_green) -> jsonResource = R.raw.sutter_green
-                context.getString(R.string.key_bayside) -> jsonResource = R.raw.bayside
-                context.getString(R.string.key_gleeson) -> jsonResource = R.raw.gleeson
-                context.getString(R.string.key_super_simple) -> jsonResource = R.raw.super_simple
-                context.getString(R.string.key_crazy) -> jsonResource = R.raw.crazy
+                activity.getString(R.string.key_shades_of_gray)-> jsonResource = R.raw.shades_of_gray
+                activity.getString(R.string.key_caro) -> jsonResource = R.raw.caro
+                activity.getString(R.string.key_subtle_grayscale) -> jsonResource = R.raw.subtle_gray_scale
+                activity.getString(R.string.key_ultra_light) -> jsonResource = R.raw.ultra_light
+                activity.getString(R.string.key_sutter_green) -> jsonResource = R.raw.sutter_green
+                activity.getString(R.string.key_bayside) -> jsonResource = R.raw.bayside
+                activity.getString(R.string.key_gleeson) -> jsonResource = R.raw.gleeson
+                activity.getString(R.string.key_super_simple) -> jsonResource = R.raw.super_simple
+                activity.getString(R.string.key_crazy) -> jsonResource = R.raw.crazy
             }
 
-            if (chosenStyle != context.getString(R.string.key_default)) {
-                map?.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, jsonResource))
+            if (chosenStyle != activity.getString(R.string.key_default)) {
+                map?.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, jsonResource))
             }
             //if the chosen style is satellite
-            if(chosenStyle == context.getString(R.string.key_satellite)){
+            if(chosenStyle == activity.getString(R.string.key_satellite)){
                 map?.mapType = GoogleMap.MAP_TYPE_HYBRID
             }else{
                 map?.mapType = GoogleMap.MAP_TYPE_NORMAL
             }
 
-            if(chosenStyle == context.getString(R.string.key_3d)){
+            if(chosenStyle == activity.getString(R.string.key_3d)){
                 map?.isBuildingsEnabled = true
             }
         }catch (e: Exception){
@@ -104,13 +104,10 @@ class MapManager(private val context: Context) {
      */
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun forceZoomToMyLocation(tilt:Boolean = true){
-        locationManager.getLastKnownLocationAsync(object : LocationManager.LocationListener{
-            override fun lastKnownLocation(latLng: LatLng?) {
+        val latlng = locationManager.getLastKnownLocation()
                 try {
-                    forceZoomToLocation(latLng!!, tilt)
+                    forceZoomToLocation(latlng!!, tilt)
                 }catch (e:Exception){}
-            }
-        })
     }
 
     /**
