@@ -48,7 +48,7 @@ class MapManager(private val activity: Activity) {
                 forceZoomToMyLocation(false)
                 zoomToMyLocation(true)
 
-               // activity.runOnUiThread {
+                activity.runOnUiThread {
                     map?.uiSettings?.setAllGesturesEnabled(true)
                     map?.uiSettings?.isCompassEnabled = false
                     map?.uiSettings?.isMyLocationButtonEnabled = false
@@ -56,7 +56,7 @@ class MapManager(private val activity: Activity) {
                     map?.isMyLocationEnabled = true
                     map?.isBuildingsEnabled = false
                     map?.uiSettings?.isMapToolbarEnabled = false
-                //}
+                }
 
                 setMapStyle()
             }
@@ -83,17 +83,16 @@ class MapManager(private val activity: Activity) {
             }
 
             if (chosenStyle != activity.getString(R.string.key_default)) {
-                map?.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, jsonResource))
+                val mapStyleOptions  = MapStyleOptions.loadRawResourceStyle(activity, jsonResource)
+               activity.runOnUiThread { map?.setMapStyle(mapStyleOptions) }
             }
             //if the chosen style is satellite
             if(chosenStyle == activity.getString(R.string.key_satellite)){
-                map?.mapType = GoogleMap.MAP_TYPE_HYBRID
-            }else{
-                map?.mapType = GoogleMap.MAP_TYPE_NORMAL
+                activity.runOnUiThread { map?.mapType = GoogleMap.MAP_TYPE_HYBRID }
             }
 
             if(chosenStyle == activity.getString(R.string.key_3d)){
-                map?.isBuildingsEnabled = true
+                activity.runOnUiThread { map?.isBuildingsEnabled = true }
             }
         }catch (e: Exception){
             e.printStackTrace()
@@ -125,7 +124,9 @@ class MapManager(private val activity: Activity) {
 
         val cameraPosition = builder.build()
 
-        map?.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        val cameraUpdate =CameraUpdateFactory.newCameraPosition(cameraPosition)
+
+        activity.runOnUiThread { map?.moveCamera(cameraUpdate) }
     }
 
     /**
@@ -143,7 +144,9 @@ class MapManager(private val activity: Activity) {
 
         val cameraPosition = builder.build()
 
-        map?.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        val cameraUpdate =CameraUpdateFactory.newCameraPosition(cameraPosition)
+        
+        activity.runOnUiThread { map?.animateCamera(cameraUpdate) }
     }
 
 
