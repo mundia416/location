@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.preference.PreferenceManager
+import android.util.Log
 import androidx.annotation.RequiresPermission
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -54,7 +55,6 @@ class MapManager(private val activity: Activity) {
                     map?.uiSettings?.isMyLocationButtonEnabled = false
                     map?.uiSettings?.isZoomControlsEnabled = false
                     map?.isMyLocationEnabled = true
-                    map?.isBuildingsEnabled = false
                     map?.uiSettings?.isMapToolbarEnabled = false
                 }
 
@@ -69,6 +69,7 @@ class MapManager(private val activity: Activity) {
 
             val chosenStyle = defaultPrefs.getString(activity.getString(R.string.key_map_style), activity.getString(R.string.key_default))
 
+            Log.i("Chosen Map Style",chosenStyle)
             //@WARNING dont change any of these strings
             when (chosenStyle) {
                 activity.getString(R.string.key_shades_of_gray)-> jsonResource = R.raw.shades_of_gray
@@ -82,17 +83,17 @@ class MapManager(private val activity: Activity) {
                 activity.getString(R.string.key_crazy) -> jsonResource = R.raw.crazy
             }
 
-            if (chosenStyle != activity.getString(R.string.key_default)) {
-                val mapStyleOptions  = MapStyleOptions.loadRawResourceStyle(activity, jsonResource)
-               activity.runOnUiThread { map?.setMapStyle(mapStyleOptions) }
-            }
-            //if the chosen style is satellite
-            if(chosenStyle == activity.getString(R.string.key_satellite)){
-                activity.runOnUiThread { map?.mapType = GoogleMap.MAP_TYPE_HYBRID }
-            }
-
-            if(chosenStyle == activity.getString(R.string.key_3d)){
+            if (chosenStyle != activity.getString(R.string.key_default) &&
+                    chosenStyle != activity.getString(R.string.key_satellite) &&
+                    chosenStyle != activity.getString(R.string.key_3d)) {
+                val mapStyleOptions = MapStyleOptions.loadRawResourceStyle(activity, jsonResource)
+                activity.runOnUiThread { map?.setMapStyle(mapStyleOptions) }
+            } else if(chosenStyle == activity.getString(R.string.key_satellite)){
+                activity.runOnUiThread { map?.mapType = GoogleMap.MAP_TYPE_SATELLITE }
+            }else if(chosenStyle == activity.getString(R.string.key_3d)){
                 activity.runOnUiThread { map?.isBuildingsEnabled = true }
+            }else if(chosenStyle == activity.getString(R.string.key_default)) {
+                activity.runOnUiThread { map?.isBuildingsEnabled = false }
             }
         }catch (e: Exception){
             e.printStackTrace()
@@ -145,7 +146,7 @@ class MapManager(private val activity: Activity) {
         val cameraPosition = builder.build()
 
         val cameraUpdate =CameraUpdateFactory.newCameraPosition(cameraPosition)
-        
+
         activity.runOnUiThread { map?.animateCamera(cameraUpdate) }
     }
 
