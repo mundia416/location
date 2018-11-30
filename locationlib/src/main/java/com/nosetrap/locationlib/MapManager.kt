@@ -83,16 +83,35 @@ class MapManager(private val activity: Activity) {
                 activity.getString(R.string.key_crazy) -> jsonResource = R.raw.crazy
             }
 
+            //style
             if (chosenStyle != activity.getString(R.string.key_default) &&
                     chosenStyle != activity.getString(R.string.key_satellite) &&
                     chosenStyle != activity.getString(R.string.key_3d)) {
                 val mapStyleOptions = MapStyleOptions.loadRawResourceStyle(activity, jsonResource)
-                activity.runOnUiThread { map?.setMapStyle(mapStyleOptions) }
-            } else if(chosenStyle == activity.getString(R.string.key_satellite)){
+                activity.runOnUiThread {
+                    map?.setMapStyle(mapStyleOptions)
+                    map?.mapType = GoogleMap.MAP_TYPE_NORMAL
+                }
+            }
+            //default
+            if(chosenStyle == activity.getString(R.string.key_default)) {
+                activity.runOnUiThread {
+                    map?.mapType = GoogleMap.MAP_TYPE_NORMAL
+                }
+            }
+
+            //satellite
+            if(chosenStyle == activity.getString(R.string.key_satellite)){
                 activity.runOnUiThread { map?.mapType = GoogleMap.MAP_TYPE_SATELLITE }
-            }else if(chosenStyle == activity.getString(R.string.key_3d)){
-                activity.runOnUiThread { map?.isBuildingsEnabled = true }
-            }else if(chosenStyle == activity.getString(R.string.key_default)) {
+            }
+
+            //3d
+            if(chosenStyle == activity.getString(R.string.key_3d)){
+                activity.runOnUiThread {
+                    map?.mapType = GoogleMap.MAP_TYPE_NORMAL
+                    map?.isBuildingsEnabled = true
+                }
+            }else {
                 activity.runOnUiThread { map?.isBuildingsEnabled = false }
             }
         }catch (e: Exception){
