@@ -61,18 +61,19 @@ class MapManager(private val activity: Activity) {
                 setMapStyle()
             }
 
-
-    private fun setMapStyle(){
+    /**
+     *
+     */
+    private fun setMapStyle() {
         //set the mapstyle depending on the style chosen from the settings
         try {
             var jsonResource = 0
 
             val chosenStyle = defaultPrefs.getString(activity.getString(R.string.key_map_style), activity.getString(R.string.key_default))
 
-            Log.i("Chosen Map Style",chosenStyle)
             //@WARNING dont change any of these strings
             when (chosenStyle) {
-                activity.getString(R.string.key_shades_of_gray)-> jsonResource = R.raw.shades_of_gray
+                activity.getString(R.string.key_shades_of_gray) -> jsonResource = R.raw.shades_of_gray
                 activity.getString(R.string.key_caro) -> jsonResource = R.raw.caro
                 activity.getString(R.string.key_subtle_grayscale) -> jsonResource = R.raw.subtle_gray_scale
                 activity.getString(R.string.key_ultra_light) -> jsonResource = R.raw.ultra_light
@@ -81,43 +82,37 @@ class MapManager(private val activity: Activity) {
                 activity.getString(R.string.key_gleeson) -> jsonResource = R.raw.gleeson
                 activity.getString(R.string.key_super_simple) -> jsonResource = R.raw.super_simple
                 activity.getString(R.string.key_crazy) -> jsonResource = R.raw.crazy
+                activity.getString(R.string.key_default) -> jsonResource = R.raw.default
             }
 
             //style
-            if (chosenStyle != activity.getString(R.string.key_default) &&
-                    chosenStyle != activity.getString(R.string.key_satellite) &&
-                    chosenStyle != activity.getString(R.string.key_3d)) {
+            if (chosenStyle != activity.getString(R.string.key_satellite) && chosenStyle != activity.getString(R.string.key_3d)) {
                 val mapStyleOptions = MapStyleOptions.loadRawResourceStyle(activity, jsonResource)
                 activity.runOnUiThread {
                     map?.setMapStyle(mapStyleOptions)
                     map?.mapType = GoogleMap.MAP_TYPE_NORMAL
                 }
             }
-            //default
-            if(chosenStyle == activity.getString(R.string.key_default)) {
-                activity.runOnUiThread {
-                    map?.mapType = GoogleMap.MAP_TYPE_NORMAL
-                }
-            }
 
             //satellite
-            if(chosenStyle == activity.getString(R.string.key_satellite)){
+            if (chosenStyle == activity.getString(R.string.key_satellite)) {
                 activity.runOnUiThread { map?.mapType = GoogleMap.MAP_TYPE_SATELLITE }
             }
 
             //3d
-            if(chosenStyle == activity.getString(R.string.key_3d)){
+            if (chosenStyle == activity.getString(R.string.key_3d)) {
                 activity.runOnUiThread {
                     map?.mapType = GoogleMap.MAP_TYPE_NORMAL
                     map?.isBuildingsEnabled = true
                 }
-            }else {
+            } else {
                 activity.runOnUiThread { map?.isBuildingsEnabled = false }
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
+
     /**
      * zoom to my location without animating
      */
