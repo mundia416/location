@@ -5,7 +5,7 @@ import android.preference.PreferenceManager
 import com.nosetrap.locationlib.R
 
 /**
- * class used to get the default unit of measurement set in the settings
+ * class used to get the default_style unit of measurement set in the settings
  */
 class UnitOfSpeed(private val context: Context) {
 

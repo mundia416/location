@@ -3,9 +3,7 @@ package com.nosetrap.locationlib
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.preference.PreferenceManager
-import android.util.Log
 import androidx.annotation.RequiresPermission
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -42,7 +40,7 @@ class MapManager(private val activity: Activity) {
 
 
             /**
-     * initialises the map object to use default map settings.
+     * initialises the map object to use default_style map settings.
      */
      @SuppressLint("MissingPermission")
      fun initDefault() {
@@ -82,7 +80,7 @@ class MapManager(private val activity: Activity) {
                 activity.getString(R.string.key_gleeson) -> jsonResource = R.raw.gleeson
                 activity.getString(R.string.key_super_simple) -> jsonResource = R.raw.super_simple
                 activity.getString(R.string.key_crazy) -> jsonResource = R.raw.crazy
-                activity.getString(R.string.key_default) -> jsonResource = R.raw.default
+                activity.getString(R.string.key_default) -> jsonResource = R.raw.default_style
             }
 
             //style
