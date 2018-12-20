@@ -94,7 +94,7 @@ class MapManager(private val activity: Activity) {
 
             //satellite
             if (chosenStyle == activity.getString(R.string.key_satellite)) {
-                activity.runOnUiThread { map?.mapType = GoogleMap.MAP_TYPE_SATELLITE }
+                activity.runOnUiThread { map?.mapType = GoogleMap.MAP_TYPE_HYBRID }
             }
 
             //3d
