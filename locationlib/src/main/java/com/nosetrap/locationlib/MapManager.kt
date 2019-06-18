@@ -3,6 +3,7 @@ package com.nosetrap.locationlib
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.preference.PreferenceManager
 import androidx.annotation.RequiresPermission
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -12,7 +13,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.MapStyleOptions
 
 
-class MapManager(private val activity: Activity) {
+class MapManager(private val context: Context) {
     companion object {
         const val DEFAULT_MAP_ZOOM = 15f
         private val MAX_TILT = 55f
@@ -23,8 +24,8 @@ class MapManager(private val activity: Activity) {
      */
     var map: GoogleMap? = null
 
-    private val defaultPrefs = PreferenceManager.getDefaultSharedPreferences(activity)
-    private val locationManager = LocationManager(activity)
+    private val defaultPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+    private val locationManager = LocationManager(context)
 
     /**
      * zoom the map to the users location with an animated camera
@@ -47,14 +48,12 @@ class MapManager(private val activity: Activity) {
                 forceZoomToMyLocation(false)
                 zoomToMyLocation(true)
 
-                activity.runOnUiThread {
                     map?.uiSettings?.setAllGesturesEnabled(true)
                     map?.uiSettings?.isCompassEnabled = false
                     map?.uiSettings?.isMyLocationButtonEnabled = false
                     map?.uiSettings?.isZoomControlsEnabled = false
                     map?.isMyLocationEnabled = true
                     map?.uiSettings?.isMapToolbarEnabled = false
-                }
 
                 setMapStyle()
             }
@@ -67,44 +66,40 @@ class MapManager(private val activity: Activity) {
         try {
             var jsonResource = 0
 
-            val chosenStyle = defaultPrefs.getString(activity.getString(R.string.key_map_style), activity.getString(R.string.key_default))
+            val chosenStyle = defaultPrefs.getString(context.getString(R.string.key_map_style), context.getString(R.string.key_default))
 
             //@WARNING dont change any of these strings
             when (chosenStyle) {
-                activity.getString(R.string.key_shades_of_gray) -> jsonResource = R.raw.shades_of_gray
-                activity.getString(R.string.key_caro) -> jsonResource = R.raw.caro
-                activity.getString(R.string.key_subtle_grayscale) -> jsonResource = R.raw.subtle_gray_scale
-                activity.getString(R.string.key_ultra_light) -> jsonResource = R.raw.ultra_light
-                activity.getString(R.string.key_sutter_green) -> jsonResource = R.raw.sutter_green
-                activity.getString(R.string.key_bayside) -> jsonResource = R.raw.bayside
-                activity.getString(R.string.key_gleeson) -> jsonResource = R.raw.gleeson
-                activity.getString(R.string.key_super_simple) -> jsonResource = R.raw.super_simple
-                activity.getString(R.string.key_crazy) -> jsonResource = R.raw.crazy
-                activity.getString(R.string.key_default) -> jsonResource = R.raw.default_style
+                context.getString(R.string.key_shades_of_gray) -> jsonResource = R.raw.shades_of_gray
+                context.getString(R.string.key_caro) -> jsonResource = R.raw.caro
+                context.getString(R.string.key_subtle_grayscale) -> jsonResource = R.raw.subtle_gray_scale
+                context.getString(R.string.key_ultra_light) -> jsonResource = R.raw.ultra_light
+                context.getString(R.string.key_sutter_green) -> jsonResource = R.raw.sutter_green
+                context.getString(R.string.key_bayside) -> jsonResource = R.raw.bayside
+                context.getString(R.string.key_gleeson) -> jsonResource = R.raw.gleeson
+                context.getString(R.string.key_super_simple) -> jsonResource = R.raw.super_simple
+                context.getString(R.string.key_crazy) -> jsonResource = R.raw.crazy
+                context.getString(R.string.key_default) -> jsonResource = R.raw.default_style
             }
 
             //style
-            if (chosenStyle != activity.getString(R.string.key_satellite) && chosenStyle != activity.getString(R.string.key_3d)) {
-                val mapStyleOptions = MapStyleOptions.loadRawResourceStyle(activity, jsonResource)
-                activity.runOnUiThread {
+            if (chosenStyle != context.getString(R.string.key_satellite) && chosenStyle != context.getString(R.string.key_3d)) {
+                val mapStyleOptions = MapStyleOptions.loadRawResourceStyle(context, jsonResource)
                     map?.setMapStyle(mapStyleOptions)
                     map?.mapType = GoogleMap.MAP_TYPE_NORMAL
-                }
             }
 
             //satellite
-            if (chosenStyle == activity.getString(R.string.key_satellite)) {
-                activity.runOnUiThread { map?.mapType = GoogleMap.MAP_TYPE_HYBRID }
+            if (chosenStyle == context.getString(R.string.key_satellite)) {
+                 map?.mapType = GoogleMap.MAP_TYPE_HYBRID
             }
 
             //3d
-            if (chosenStyle == activity.getString(R.string.key_3d)) {
-                activity.runOnUiThread {
+            if (chosenStyle == context.getString(R.string.key_3d)) {
                     map?.mapType = GoogleMap.MAP_TYPE_NORMAL
                     map?.isBuildingsEnabled = true
-                }
             } else {
-                activity.runOnUiThread { map?.isBuildingsEnabled = false }
+                 map?.isBuildingsEnabled = false
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -139,7 +134,7 @@ class MapManager(private val activity: Activity) {
 
         val cameraUpdate =CameraUpdateFactory.newCameraPosition(cameraPosition)
 
-        activity.runOnUiThread { map?.moveCamera(cameraUpdate) }
+         map?.moveCamera(cameraUpdate)
     }
 
     /**
@@ -159,7 +154,7 @@ class MapManager(private val activity: Activity) {
 
         val cameraUpdate =CameraUpdateFactory.newCameraPosition(cameraPosition)
 
-        activity.runOnUiThread { map?.animateCamera(cameraUpdate) }
+         map?.animateCamera(cameraUpdate) 
     }
 
 
