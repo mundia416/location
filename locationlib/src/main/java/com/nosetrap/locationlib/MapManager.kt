@@ -2,7 +2,6 @@ package com.nosetrap.locationlib
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.preference.PreferenceManager
 import androidx.annotation.RequiresPermission
@@ -23,6 +22,9 @@ class MapManager(private val context: Context) {
      * the google map object, this should be set on onMapConnected()
      */
     var map: GoogleMap? = null
+
+    var defaultMapZoom = DEFAULT_MAP_ZOOM
+
 
     private val defaultPrefs = PreferenceManager.getDefaultSharedPreferences(context)
     private val locationManager = LocationManager(context)
@@ -57,6 +59,50 @@ class MapManager(private val context: Context) {
 
                 setMapStyle()
             }
+
+    fun setMapStyle(mapStyle: MapStyle){
+        val key = when(mapStyle){
+            MapStyle.DEFAULT -> R.string.key_default
+            MapStyle.SATELITE -> R.string.key_satellite
+            MapStyle.STYLE_3D -> R.string.key_3d
+            MapStyle.SUBTLE_GRAYSCALE -> R.string.key_subtle_grayscale
+            MapStyle.ULTRA_LIGHT -> R.string.key_ultra_light
+            MapStyle.SHUTTER_GREEN ->  R.string.key_sutter_green
+            MapStyle.BAYSIDE -> R.string.key_bayside
+            MapStyle.GLEESON -> R.string.key_gleeson
+            MapStyle.SUPER_SIMPLE ->  R.string.key_super_simple
+            MapStyle.CRAZY -> R.string.key_crazy
+            MapStyle.SHADES_OF_GRAY -> R.string.key_shades_of_gray
+            MapStyle.CARO -> R.string.key_caro
+        }
+
+        defaultPrefs.edit().putString(context.getString(R.string.key_map_style),context.getString(key)).commit()
+        setMapStyle()
+
+    }
+
+    /**
+     *
+     */
+    fun getMapStyle(): MapStyle{
+        val chosenStyle = defaultPrefs.getString(context.getString(R.string.key_map_style), context.getString(R.string.key_default))
+
+        //@WARNING dont change any of these strings
+       return when (chosenStyle) {
+            context.getString(R.string.key_shades_of_gray) -> MapStyle.SHADES_OF_GRAY
+            context.getString(R.string.key_caro) -> MapStyle.CARO
+            context.getString(R.string.key_subtle_grayscale) -> MapStyle.SUBTLE_GRAYSCALE
+            context.getString(R.string.key_ultra_light) -> MapStyle.ULTRA_LIGHT
+            context.getString(R.string.key_sutter_green) -> MapStyle.SHUTTER_GREEN
+            context.getString(R.string.key_bayside) -> MapStyle.BAYSIDE
+            context.getString(R.string.key_gleeson) -> MapStyle.GLEESON
+            context.getString(R.string.key_super_simple) -> MapStyle.SUPER_SIMPLE
+            context.getString(R.string.key_crazy) -> MapStyle.CRAZY
+            context.getString(R.string.key_default) -> MapStyle.DEFAULT
+           else -> MapStyle.DEFAULT
+        }
+    }
+
 
     /**
      *
@@ -127,7 +173,7 @@ class MapManager(private val context: Context) {
         }
 
         builder.target(location)
-                .zoom(DEFAULT_MAP_ZOOM)
+                .zoom(defaultMapZoom)
                 .bearing(0f)
 
         val cameraPosition = builder.build()
@@ -147,14 +193,14 @@ class MapManager(private val context: Context) {
         }
 
         builder.target(location)
-                .zoom(DEFAULT_MAP_ZOOM)
+                .zoom(defaultMapZoom)
                 .bearing(0f)
 
         val cameraPosition = builder.build()
 
         val cameraUpdate =CameraUpdateFactory.newCameraPosition(cameraPosition)
 
-         map?.animateCamera(cameraUpdate) 
+         map?.animateCamera(cameraUpdate)
     }
 
 
