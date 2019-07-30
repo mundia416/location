@@ -25,20 +25,29 @@ class MapManager(private val context: Context) {
 
     var defaultMapZoom = DEFAULT_MAP_ZOOM
 
+    /**
+     * determines whether when init default is called the map should zoom to my location
+     */
+    var defaultZoomToMyLocation = true
+
 
     private val defaultPrefs = PreferenceManager.getDefaultSharedPreferences(context)
     private val locationManager = LocationManager(context)
 
     /**
      * zoom the map to the users location with an animated camera
+     * @return true if successfully zoomed to users location else return false
      */
     @RequiresPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun zoomToMyLocation(tilt:Boolean = true){
+    fun zoomToMyLocation(tilt:Boolean = true): Boolean{
          val latLng = locationManager.getLastKnownLocation()
 
-        try {
+        return try {
             zoomToLocation(latLng!!, tilt)
-        }catch (e:Exception){}
+            true
+        }catch (e:Exception){
+            false
+        }
     }
 
 
@@ -48,7 +57,7 @@ class MapManager(private val context: Context) {
      @SuppressLint("MissingPermission")
      fun initDefault() {
                 forceZoomToMyLocation(false)
-                zoomToMyLocation(true)
+                if(defaultZoomToMyLocation) zoomToMyLocation(true)
 
                     map?.uiSettings?.setAllGesturesEnabled(true)
                     map?.uiSettings?.isCompassEnabled = false
@@ -76,7 +85,7 @@ class MapManager(private val context: Context) {
             MapStyle.CARO -> R.string.key_caro
         }
 
-        defaultPrefs.edit().putString(context.getString(R.string.key_map_style),context.getString(key)).commit()
+        val success = defaultPrefs.edit().putString(context.getString(R.string.key_map_style),context.getString(key)).commit()
         setMapStyle()
 
     }
